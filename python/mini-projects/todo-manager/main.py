@@ -1,63 +1,94 @@
-# ADVANCED TODO MANAGER - MINI PROJECT
+# ==============================
+# ADVANCED TODO MANAGER (CLI)
+# ==============================
+# A menu-driven Todo Manager using
+# functions, lists, dictionaries,
+# and clean control flow.
+# ==============================
 
-tasks = []
+# Stores all tasks as dictionaries
+task_list = []
 
 
-def generate_id():
-    return len(tasks) + 1
+def generate_task_id():
+    """
+    Generates a unique task ID based on
+    the current number of tasks.
+    """
+    return len(task_list) + 1
 
 
 def task_exists(task_name):
-    for task in tasks:
+    """
+    Checks if a task with the same name
+    already exists (case-insensitive).
+    Prevents duplicate tasks.
+    """
+    for task in task_list:
         if task["name"].lower() == task_name.lower():
             return True
     return False
 
 
 def add_task():
-    name = input("Enter task name: ").strip()
+    """
+    Adds a new task to the task list
+    after validating duplication.
+    """
+    task_name = input("Enter task name: ").strip()
 
-    if task_exists(name):
+    if task_exists(task_name):
         print("⚠️ Task already exists. Duplicate not allowed.")
         return
 
     due_date = input("Enter due date (YYYY-MM-DD): ").strip()
 
     task = {
-        "id": generate_id(),
-        "name": name,
-        "due": due_date,
+        "id": generate_task_id(),
+        "name": task_name,
+        "due_date": due_date,
         "status": "Pending"
     }
 
-    tasks.append(task)
+    task_list.append(task)
     print("✅ Task added successfully!")
 
 
 def view_tasks():
-    if not tasks:
+    """
+    Displays all tasks in a readable format.
+    """
+    if not task_list:
         print("📭 No tasks available.")
         return
 
     print("\n--- YOUR TASKS ---")
-    for task in tasks:
+    for task in task_list:
         print(
-            f"[{task['id']}] {task['name']} | Due: {task['due']} | Status: {task['status']}")
+            f"[{task['id']}] {task['name']} | Due: {task['due_date']} | Status: {task['status']}"
+        )
 
 
-def fix_task_ids():
-    for index, task in enumerate(tasks):
+def refresh_task_ids():
+    """
+    Reassigns task IDs after deletion
+    to keep IDs sequential.
+    """
+    for index, task in enumerate(task_list):
         task["id"] = index + 1
 
 
-def mark_completed():
+def mark_task_completed():
+    """
+    Marks a selected task as completed.
+    """
     view_tasks()
-    if not tasks:
+    if not task_list:
         return
 
     task_id = int(input("Enter task ID to mark completed: "))
 
-    for task in tasks:
+    for task in task_list:
         if task["id"] == task_id:
             task["status"] = "Completed"
             print("🎉 Task marked as completed!")
@@ -67,23 +98,31 @@ def mark_completed():
 
 
 def delete_task():
+    """
+    Deletes a task based on task ID
+    and refreshes remaining IDs.
+    """
     view_tasks()
-    if not tasks:
+    if not task_list:
         return
 
     task_id = int(input("Enter task ID to delete: "))
 
-    for task in tasks:
+    for task in task_list:
         if task["id"] == task_id:
-            tasks.remove(task)
-            fix_task_ids()
+            task_list.remove(task)
+            refresh_task_ids()
             print("🗑️ Task deleted successfully!")
             return
 
     print("❌ Invalid task ID.")
 
 
-def menu():
+def show_menu():
+    """
+    Main menu loop controlling
+    user interaction.
+    """
     while True:
         print("\n===== TODO MANAGER =====")
         print("1. Add Task")
@@ -92,14 +131,14 @@ def menu():
         print("4. Delete Task")
         print("5. Exit")
 
-        choice = input("Choose an option (1-5): ")
+        choice = input("Choose an option (1-5): ").strip()
 
         if choice == "1":
             add_task()
         elif choice == "2":
             view_tasks()
         elif choice == "3":
-            mark_completed()
+            mark_task_completed()
         elif choice == "4":
             delete_task()
         elif choice == "5":
@@ -109,4 +148,5 @@ def menu():
             print("⚠️ Invalid choice. Try again.")
 
 
-menu()
+# Program entry point
+show_menu()
