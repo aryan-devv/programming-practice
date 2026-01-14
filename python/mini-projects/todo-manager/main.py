@@ -4,6 +4,7 @@
 # A menu-driven Todo Manager using
 # functions, lists, dictionaries,
 # and clean control flow.
+# Focused on clarity, safety, and UX.
 # ==============================
 
 # Stores all tasks as dictionaries
@@ -57,6 +58,7 @@ def add_task():
 def view_tasks():
     """
     Displays all tasks in a readable format.
+    Uses symbols for quick status clarity.
     """
     if not task_list:
         print("📭 No tasks available.")
@@ -64,8 +66,9 @@ def view_tasks():
 
     print("\n--- YOUR TASKS ---")
     for task in task_list:
+        status_icon = "✔️" if task["status"] == "Completed" else "⏳"
         print(
-            f"[{task['id']}] {task['name']} | Due: {task['due_date']} | Status: {task['status']}"
+            f"[{task['id']}] {task['name']} | Due: {task['due_date']} | {status_icon} {task['status']}"
         )
 
 
@@ -78,6 +81,18 @@ def refresh_task_ids():
         task["id"] = index + 1
 
 
+def get_valid_task_id(prompt):
+    """
+    Safely gets a numeric task ID from the user.
+    Prevents crashes on invalid input.
+    """
+    user_input = input(prompt).strip()
+    if not user_input.isdigit():
+        print("⚠️ Please enter a valid numeric task ID.")
+        return None
+    return int(user_input)
+
+
 def mark_task_completed():
     """
     Marks a selected task as completed.
@@ -86,7 +101,9 @@ def mark_task_completed():
     if not task_list:
         return
 
-    task_id = int(input("Enter task ID to mark completed: "))
+    task_id = get_valid_task_id("Enter task ID to mark completed: ")
+    if task_id is None:
+        return
 
     for task in task_list:
         if task["id"] == task_id:
@@ -99,20 +116,29 @@ def mark_task_completed():
 
 def delete_task():
     """
-    Deletes a task based on task ID
+    Deletes a task after confirmation
     and refreshes remaining IDs.
     """
     view_tasks()
     if not task_list:
         return
 
-    task_id = int(input("Enter task ID to delete: "))
+    task_id = get_valid_task_id("Enter task ID to delete: ")
+    if task_id is None:
+        return
 
     for task in task_list:
         if task["id"] == task_id:
-            task_list.remove(task)
-            refresh_task_ids()
-            print("🗑️ Task deleted successfully!")
+            confirm = input(
+                f"Are you sure you want to delete '{task['name']}'? (y/n): "
+            ).strip().lower()
+
+            if confirm == "y":
+                task_list.remove(task)
+                refresh_task_ids()
+                print("🗑️ Task deleted successfully!")
+            else:
+                print("❎ Deletion cancelled.")
             return
 
     print("❌ Invalid task ID.")
