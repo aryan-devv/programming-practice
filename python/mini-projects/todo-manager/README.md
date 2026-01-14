@@ -5,7 +5,7 @@
 </p>
 
 > A clean, menu-driven **Todo Manager** built using Python.  
-> Designed to practice real-world logic, clean function separation, and disciplined CLI-based problem solving.
+> Designed to practice real-world logic, safe user input handling, and disciplined CLI-based problem solving.
 
 ---
 
@@ -15,9 +15,10 @@
 - 🚫 Prevent **duplicate task names**
 - 📋 View all tasks in a clear, readable format
 - ✅ Mark tasks as completed
-- 🗑️ Delete tasks safely
+- 🗑️ Delete tasks with **confirmation**
 - 🔁 Automatically reassign task IDs after deletion
-- 🧠 Simple, function-based design focused on clarity
+- 🛡️ Safe handling of invalid user input
+- 🧠 Simple, function-based design focused on clarity and reliability
 
 ---
 
@@ -27,8 +28,9 @@
 - 🔁 Loops and control flow  
 - 🔀 Conditional logic  
 - 📦 Data handling with lists & dictionaries  
-- 🛡️ Basic input validation  
+- 🛡️ Input validation and error prevention  
 - 🎨 Clean CLI input/output formatting  
+- 🧠 Improving user experience in terminal applications  
 
 ---
 
@@ -46,7 +48,6 @@ Choose an option (1-5): 1
 Enter task name: Learn Python
 Enter due date (YYYY-MM-DD): 2026-01-20
 ✅ Task added successfully!
-
 ```
 
 ## 🛠️ Future Enhancements
@@ -72,10 +73,11 @@ Enter due date (YYYY-MM-DD): 2026-01-20
 
 This project focuses on moving beyond syntax and into engineering thinking:
 
-- Translating requirements into a working system  
-- Handling edge cases like duplicates and ID consistency  
+- Translating requirements into a usable system  
+- Handling edge cases like invalid input and duplicate data  
 - Writing readable, maintainable Python code  
-- Practicing discipline, structure, and consistency
+- Improving usability without adding unnecessary complexity
+- Practicing consistency and refinement over time
 
 A small project, but a meaningful step toward building larger systems 🚀
 
