@@ -5,6 +5,20 @@
 # functions, lists, dictionaries,
 # and clean control flow.
 # Focused on clarity, safety, and UX.
+#
+# ------------------------------
+# TEST SCENARIOS (THINKING FIRST)
+# ------------------------------
+# 1. Add a task with a unique name → should be added successfully
+# 2. Add a task with a duplicate name → should be rejected
+# 3. View tasks when task list is empty → should show "No tasks available"
+# 4. Mark a task as completed using a valid ID → status should update
+# 5. Enter non-numeric input for task ID → program should not crash
+# 6. Delete a task and confirm deletion → task removed and IDs refreshed
+# 7. Cancel deletion when asked → task list remains unchanged
+#
+# These scenarios help verify system behavior
+# without writing automated test code.
 # ==============================
 
 # Stores all tasks as dictionaries
@@ -35,6 +49,10 @@ def add_task():
     """
     Adds a new task to the task list
     after validating duplication.
+
+    Test cases:
+    - Adding a task with a new name
+    - Adding a task with an existing name
     """
     task_name = input("Enter task name: ").strip()
 
@@ -59,6 +77,10 @@ def view_tasks():
     """
     Displays all tasks in a readable format.
     Uses symbols for quick status clarity.
+
+    Test cases:
+    - Viewing tasks when list is empty
+    - Viewing tasks after additions
     """
     if not task_list:
         print("📭 No tasks available.")
@@ -76,6 +98,9 @@ def refresh_task_ids():
     """
     Reassigns task IDs after deletion
     to keep IDs sequential.
+
+    Test case:
+    - Delete a task and ensure IDs are updated correctly
     """
     for index, task in enumerate(task_list):
         task["id"] = index + 1
@@ -85,6 +110,10 @@ def get_valid_task_id(prompt):
     """
     Safely gets a numeric task ID from the user.
     Prevents crashes on invalid input.
+
+    Test cases:
+    - Enter letters instead of numbers
+    - Enter numbers outside valid range
     """
     user_input = input(prompt).strip()
     if not user_input.isdigit():
@@ -96,6 +125,10 @@ def get_valid_task_id(prompt):
 def mark_task_completed():
     """
     Marks a selected task as completed.
+
+    Test cases:
+    - Mark a valid task as completed
+    - Enter invalid task ID
     """
     view_tasks()
     if not task_list:
@@ -118,6 +151,11 @@ def delete_task():
     """
     Deletes a task after confirmation
     and refreshes remaining IDs.
+
+    Test cases:
+    - Confirm deletion with 'y'
+    - Cancel deletion with 'n'
+    - Enter invalid task ID
     """
     view_tasks()
     if not task_list:
@@ -148,6 +186,10 @@ def show_menu():
     """
     Main menu loop controlling
     user interaction.
+
+    Test cases:
+    - Invalid menu choice
+    - Exit option
     """
     while True:
         print("\n===== TODO MANAGER =====")
